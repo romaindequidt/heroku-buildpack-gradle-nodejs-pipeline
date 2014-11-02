@@ -3,6 +3,8 @@
 
 # fail fast
 set -e
+set -o pipefail   # don't ignore exit codes when piping output
+set -x          # enable debugging
 
 BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 OPT_DIR=$(cd $BIN_DIR/../opt; pwd)
@@ -11,6 +13,10 @@ OPT_DIR=$(cd $BIN_DIR/../opt; pwd)
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+
+# Fix leak
+unset GIT_DIR
+
 
 GRADLE_TASK=${GRADLE_TASK-stage}
 
