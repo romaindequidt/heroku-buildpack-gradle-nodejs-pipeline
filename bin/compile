@@ -13,6 +13,7 @@ OPT_DIR=$(cd $BIN_DIR/../opt; pwd)
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+BP_DIR=$(cd $(dirname $0); cd ..; pwd)
 
 # Fix leak
 unset GIT_DIR
@@ -21,7 +22,7 @@ unset GIT_DIR
 trap cat_npm_debug_log ERR
 
 # Look in package.json's engines.node field for a semver range
-semver_range=$(cat $build_dir/package.json | $bp_dir/vendor/jq -r .engines.node)
+semver_range=$(cat $BUILD_DIR/package.json | $BP_DIR/vendor/jq -r .engines.node)
 
 # Resolve node version using semver.io
 node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
@@ -47,13 +48,13 @@ fi
 # Download node from Heroku's S3 mirror of nodejs.org/dist
 status "Downloading and installing node"
 node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
-curl $node_url -s -o - | tar xzf - -C $build_dir
+curl $node_url -s -o - | tar xzf - -C $BUILD_DIR
 
 # Move node (and npm) into ./vendor and make them executable
-mkdir -p $build_dir/vendor
-mv $build_dir/node-v$node_version-linux-x64 $build_dir/vendor/node
-chmod +x $build_dir/vendor/node/bin/*
-PATH=$build_dir/vendor/node/bin:$PATH
+mkdir -p $BUILD_DIR/vendor
+mv $BUILD_DIR/node-v$node_version-linux-x64 $BUILD_DIR/vendor/node
+chmod +x $BUILD_DIR/vendor/node/bin/*
+PATH=$BUILD_DIR/vendor/node/bin:$PATH
 
 
 GRADLE_TASK=${GRADLE_TASK-stage}
