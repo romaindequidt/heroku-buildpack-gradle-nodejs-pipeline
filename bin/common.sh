@@ -1,13 +1,13 @@
-error() {
+node_error() {
   echo " !     $*" >&2
   exit 1
 }
 
-status() {
+node_status() {
   echo "-----> $*"
 }
 
-protip() {
+node_protip() {
   echo
   echo "PRO TIP: $*" | indent
   echo "See https://devcenter.heroku.com/articles/nodejs-support" | indent
