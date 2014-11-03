@@ -19,8 +19,9 @@ BP_DIR=$(cd $(dirname $0); cd ..; pwd)
 unset GIT_DIR
 
 # Output npm debug info on error
-trap cat_npm_debug_log ERR
+# trap cat_npm_debug_log ERR
 
+echo ""
 # Look in package.json's engines.node field for a semver range
 semver_range=$(cat $BUILD_DIR/package.json | $BP_DIR/vendor/jq -r .engines.node)
 
@@ -56,8 +57,8 @@ mv $BUILD_DIR/node-v$node_version-linux-x64 $BUILD_DIR/vendor/node
 chmod +x $BUILD_DIR/vendor/node/bin/*
 PATH=$BUILD_DIR/vendor/node/bin:$PATH
 
-
 GRADLE_TASK=${GRADLE_TASK-stage}
+echo "GRADLE_TASK=${GRADLE_TASK-stage}"
 
 JVM_COMMON_BUILDPACK=http://lang-jvm.s3.amazonaws.com/jvm-buildpack-common-v3.tar.gz
 mkdir -p /tmp/jvm-common
