@@ -26,7 +26,7 @@ source $BP_DIR/bin/common.sh
 
 echo ""
 # Look in package.json's engines.node field for a semver range
-semver_range=$(cat $BUILD_DIR/package.json | $BP_DIR/vendor/jq -r .engines.node)
+semver_range=$(cat $BUILD_DIR/client/package.json | $BP_DIR/vendor/jq -r .engines.node)
 
 # Resolve node version using semver.io
 node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
